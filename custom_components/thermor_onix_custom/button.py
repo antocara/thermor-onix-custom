@@ -51,11 +51,13 @@ class ThermorSyncClockButton(ThermorOnixEntity, ButtonEntity):
     async def async_press(self) -> None:
         """Send current local date and time to the water heater."""
         now = dt_util.now()
+        # Cozytouch Overkiz driver expects weekday in range 0-6 (0=Sunday, 1=Monday, ..., 6=Saturday)
+        overkiz_weekday = (now.weekday() + 1) % 7
         date_time_payload = {
             "year": now.year,
             "month": now.month,
             "day": now.day,
-            "weekday": now.isoweekday(),
+            "weekday": overkiz_weekday,
             "hour": now.hour,
             "minute": now.minute,
             "second": now.second,

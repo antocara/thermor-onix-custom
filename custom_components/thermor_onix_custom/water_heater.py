@@ -160,12 +160,20 @@ class ThermorOnixWaterHeater(ThermorOnixEntity, WaterHeaterEntity):
             return
 
         target_temp = max(self._attr_min_temp, min(self._attr_max_temp, float(target_temp)))
-        _LOGGER.info("Setting Thermor Onix target temperature to %.1f °C", target_temp)
+        # Thermor Onix double-tank hardware regulates temperature via shower capacity (1 to 5 showers)
+        # 50°C -> 1 shower, 55°C -> 2 showers, 60°C -> 3 showers, 65°C -> 4 showers, 70°C -> 5 showers
+        target_showers = int(round((target_temp - 50.0) / 5.0)) + 1
+        target_showers = max(1, min(5, target_showers))
+        _LOGGER.info(
+            "Setting Thermor Onix target temperature to %.1f °C (mapped to %d showers)",
+            target_temp,
+            target_showers,
+        )
 
         await self.coordinator.async_execute_command(
             self._device.device_url,
-            CMD_SET_WATER_TARGET_TEMP,
-            [target_temp],
+            CMD_SET_EXPECTED_SHOWERS,
+            [target_showers],
         )
 
     async def async_set_operation_mode(self, operation_mode: str) -> None:
