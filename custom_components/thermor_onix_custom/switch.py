@@ -62,30 +62,43 @@ class ThermorAntiLegionellaSwitch(ThermorOnixEntity, SwitchEntity):
         super().__init__(coordinator, device, "anti_legionella")
         self._attr_name = "Anti-Legionella Cycle"
         self._attr_icon = "mdi:virus-off"
+        self._attr_is_on: bool | None = None
 
     @property
     def is_on(self) -> bool:
         """Return True if anti-legionella cycle is enabled."""
+        if self._attr_is_on is not None:
+            return self._attr_is_on
         val = self.get_state(STATE_ANTI_LEGIONELLOSIS)
         return str(val).lower() in ("1", "on", "true")
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on anti-legionella protection."""
+        self._attr_is_on = True
+        self.async_write_ha_state()
         _LOGGER.info("Enabling anti-legionella protection on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_ANTI_LEGIONELLOSIS,
-            [1],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_ANTI_LEGIONELLOSIS,
+                [1],
+            )
+        finally:
+            self._attr_is_on = None
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off anti-legionella protection."""
+        self._attr_is_on = False
+        self.async_write_ha_state()
         _LOGGER.info("Disabling anti-legionella protection on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_ANTI_LEGIONELLOSIS,
-            [0],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_ANTI_LEGIONELLOSIS,
+                [0],
+            )
+        finally:
+            self._attr_is_on = None
 
 
 class ThermorSmartGridSwitch(ThermorOnixEntity, SwitchEntity):
@@ -100,30 +113,43 @@ class ThermorSmartGridSwitch(ThermorOnixEntity, SwitchEntity):
         super().__init__(coordinator, device, "smart_grid")
         self._attr_name = "Smart Grid / Solar Surplus Mode"
         self._attr_icon = "mdi:solar-power"
+        self._attr_is_on: bool | None = None
 
     @property
     def is_on(self) -> bool:
         """Return True if Smart Grid option is active."""
+        if self._attr_is_on is not None:
+            return self._attr_is_on
         val = self.get_state(STATE_SMART_GRID)
         return str(val).lower() == "active"
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Activate Smart Grid mode."""
+        self._attr_is_on = True
+        self.async_write_ha_state()
         _LOGGER.info("Activating Smart Grid mode on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_SMART_GRID_OPTION,
-            ["active"],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_SMART_GRID_OPTION,
+                ["active"],
+            )
+        finally:
+            self._attr_is_on = None
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Deactivate Smart Grid mode."""
+        self._attr_is_on = False
+        self.async_write_ha_state()
         _LOGGER.info("Deactivating Smart Grid mode on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_SMART_GRID_OPTION,
-            ["deactive"],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_SMART_GRID_OPTION,
+                ["deactive"],
+            )
+        finally:
+            self._attr_is_on = None
 
 
 class ThermorBoostSwitch(ThermorOnixEntity, SwitchEntity):
@@ -138,30 +164,43 @@ class ThermorBoostSwitch(ThermorOnixEntity, SwitchEntity):
         super().__init__(coordinator, device, "boost_switch")
         self._attr_name = "Quick Boost"
         self._attr_icon = "mdi:rocket-launch"
+        self._attr_is_on: bool | None = None
 
     @property
     def is_on(self) -> bool:
         """Return True if Boost mode is currently active."""
+        if self._attr_is_on is not None:
+            return self._attr_is_on
         val = self.get_state(STATE_BOOST_MODE)
         return str(val).lower() == "on"
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on Boost mode."""
+        self._attr_is_on = True
+        self.async_write_ha_state()
         _LOGGER.info("Activating Boost mode on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_BOOST_MODE,
-            ["on"],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_BOOST_MODE,
+                ["on"],
+            )
+        finally:
+            self._attr_is_on = None
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off Boost mode."""
+        self._attr_is_on = False
+        self.async_write_ha_state()
         _LOGGER.info("Deactivating Boost mode on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_BOOST_MODE,
-            ["off"],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_BOOST_MODE,
+                ["off"],
+            )
+        finally:
+            self._attr_is_on = None
 
 
 class ThermorAwaySwitch(ThermorOnixEntity, SwitchEntity):
@@ -176,30 +215,43 @@ class ThermorAwaySwitch(ThermorOnixEntity, SwitchEntity):
         super().__init__(coordinator, device, "away_switch")
         self._attr_name = "Away Mode (Anti-Frost)"
         self._attr_icon = "mdi:home-export-outline"
+        self._attr_is_on: bool | None = None
 
     @property
     def is_on(self) -> bool:
         """Return True if Away mode is currently active."""
+        if self._attr_is_on is not None:
+            return self._attr_is_on
         val = self.get_state(STATE_ABSENCE_MODE)
         return str(val).lower() == "on"
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on Away mode."""
+        self._attr_is_on = True
+        self.async_write_ha_state()
         _LOGGER.info("Activating Away mode on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_ABSENCE_MODE,
-            ["on"],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_ABSENCE_MODE,
+                ["on"],
+            )
+        finally:
+            self._attr_is_on = None
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off Away mode."""
+        self._attr_is_on = False
+        self.async_write_ha_state()
         _LOGGER.info("Deactivating Away mode on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_ABSENCE_MODE,
-            ["off"],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_ABSENCE_MODE,
+                ["off"],
+            )
+        finally:
+            self._attr_is_on = None
 
 
 class ThermorEcoSwitch(ThermorOnixEntity, SwitchEntity):
@@ -214,27 +266,40 @@ class ThermorEcoSwitch(ThermorOnixEntity, SwitchEntity):
         super().__init__(coordinator, device, "eco_switch")
         self._attr_name = "Eco Mode"
         self._attr_icon = "mdi:leaf"
+        self._attr_is_on: bool | None = None
 
     @property
     def is_on(self) -> bool:
         """Return True if Eco mode is active."""
+        if self._attr_is_on is not None:
+            return self._attr_is_on
         val = self.get_state(STATE_DHW_MODE)
         return "ecoactive" in str(val).lower()
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on Eco mode."""
+        self._attr_is_on = True
+        self.async_write_ha_state()
         _LOGGER.info("Activating Eco mode on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_DHW_MODE,
-            ["manualEcoActive"],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_DHW_MODE,
+                ["manualEcoActive"],
+            )
+        finally:
+            self._attr_is_on = None
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off Eco mode (switch to manual)."""
+        self._attr_is_on = False
+        self.async_write_ha_state()
         _LOGGER.info("Deactivating Eco mode on Thermor Onix")
-        await self.coordinator.async_execute_command(
-            self._device.device_url,
-            CMD_SET_DHW_MODE,
-            ["manualEcoInactive"],
-        )
+        try:
+            await self.coordinator.async_execute_command(
+                self._device.device_url,
+                CMD_SET_DHW_MODE,
+                ["manualEcoInactive"],
+            )
+        finally:
+            self._attr_is_on = None

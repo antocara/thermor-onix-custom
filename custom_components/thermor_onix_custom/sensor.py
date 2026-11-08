@@ -99,7 +99,6 @@ MAIN_DEVICE_SENSORS: tuple[ThermorSensorDescription, ...] = (
         name="Available Water Volume at 40°C",
         state_key=STATE_V40_VOLUME,
         device_class=SensorDeviceClass.VOLUME,
-        state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfVolume.LITERS,
         suggested_display_precision=1,
         icon="mdi:water-boiler",

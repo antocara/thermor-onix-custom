@@ -30,9 +30,16 @@ class ThermorOnixEntity(CoordinatorEntity[ThermorDataUpdateCoordinator]):
         self._attr_unique_id = f"{device.device_url}_{key}"
 
     @property
+    def device(self) -> Device:
+        """Return the latest fresh device instance from coordinator data."""
+        if self.coordinator.data and "devices" in self.coordinator.data:
+            return self.coordinator.data["devices"].get(self._device.device_url, self._device)
+        return self._device
+
+    @property
     def device_info(self) -> DeviceInfo:
         """Return device registry information to group all entities under one device card."""
-        main_dev = self.coordinator.main_device or self._device
+        main_dev = self.coordinator.main_device or self.device
         model_name = "Onix 80L (Double Tank)"
         manufacturer = "Thermor (Atlantic Group)"
 
@@ -50,8 +57,8 @@ class ThermorOnixEntity(CoordinatorEntity[ThermorDataUpdateCoordinator]):
         )
 
     def get_state(self, state_name: str, default: Any = None) -> Any:
-        """Return the value of a state from this entity's device."""
-        return self.get_state_from_device(self._device, state_name, default)
+        """Return the latest value of a state from this entity's device."""
+        return self.get_state_from_device(self.device, state_name, default)
 
     @staticmethod
     def get_state_from_device(device: Device | None, state_name: str, default: Any = None) -> Any:
