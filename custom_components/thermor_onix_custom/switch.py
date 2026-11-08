@@ -273,19 +273,19 @@ class ThermorEcoSwitch(ThermorOnixEntity, SwitchEntity):
         """Return True if Eco mode is active."""
         if self._attr_is_on is not None:
             return self._attr_is_on
-        val = self.get_state(STATE_DHW_MODE)
-        return "ecoactive" in str(val).lower()
+        val = str(self.get_state(STATE_DHW_MODE, "")).lower()
+        return val in ("automode", "auto", "manualecoactive", "eco")
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on Eco mode."""
         self._attr_is_on = True
         self.async_write_ha_state()
-        _LOGGER.info("Activating Eco mode on Thermor Onix")
+        _LOGGER.info("Activating Eco mode (autoMode) on Thermor Onix")
         try:
             await self.coordinator.async_execute_command(
                 self._device.device_url,
                 CMD_SET_DHW_MODE,
-                ["manualEcoActive"],
+                ["autoMode"],
             )
         finally:
             self._attr_is_on = None

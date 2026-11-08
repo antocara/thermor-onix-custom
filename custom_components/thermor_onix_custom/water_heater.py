@@ -114,8 +114,8 @@ class ThermorOnixWaterHeater(ThermorOnixEntity, WaterHeaterEntity):
         if boost == "on":
             return STATE_PERFORMANCE
 
-        dhw_mode = str(self.get_state(STATE_DHW_MODE, "manualEcoInactive"))
-        if "ecoactive" in dhw_mode.lower():
+        dhw_mode = str(self.get_state(STATE_DHW_MODE, "manualEcoInactive")).lower()
+        if dhw_mode in ("automode", "auto", "manualecoactive", "eco"):
             return STATE_ECO
 
         return STATE_ELECTRIC
@@ -199,7 +199,7 @@ class ThermorOnixWaterHeater(ThermorOnixEntity, WaterHeaterEntity):
             await self.coordinator.async_execute_command(
                 self._device.device_url,
                 CMD_SET_DHW_MODE,
-                ["manualEcoActive"],
+                ["autoMode"],
             )
         elif operation_mode == STATE_ELECTRIC:
             # Standard manual mode
