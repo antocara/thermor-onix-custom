@@ -15,6 +15,14 @@
    - Structure: `<type>(<scope>): <description>` (e.g., `fix(switch): ...`, `feat(water_heater): ...`, `chore: ...`).
    - Standard types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
 
+4. **RELEASE & VERSIONING PROTOCOL (MANDATORY):**
+   - Whenever preparing a new version or release:
+     1. **Update Manifest Version:** The agent **MUST** update the `"version"` field in `custom_components/thermor_onix_custom/manifest.json` before tagging.
+     2. **Version Bump Commit Format:** The commit updating `manifest.json` **MUST** follow Conventional Commits:
+        `chore(release): bump version to vX.Y.Z` (or `chore: bump version to vX.Y.Z`).
+     3. **Directory Synchronization:** Ensure `manifest.json` and integration files are completely synchronized between `c:\Users\antoc\Proyectos\thermor-onix-custom` and `c:\Users\antoc\Proyectos\Home Assistant`.
+     4. **Tagging & Publishing:** Only tag (`git tag vX.Y.Z`) and push (`git push origin vX.Y.Z`) after the commit has been created and the user explicitly orders: *"haz el push"* or *"publica la release"*.
+
 ---
 
 ## 🛠️ PROJECT ARCHITECTURE & DEVELOPMENT RULES
