@@ -37,9 +37,9 @@
       "operating_range": {
         "name": "Modo de Horario Operativo",
         "state": {
-          "24h Continuous": "24 Horas Continuo",
-          "Programmed Slots": "Solo Franjas Programadas",
-          "Off-Peak Hours (HC)": "Solo Horas Valle"
+          "continuous_24h": "24 Horas Continuo",
+          "programmed_slots": "Solo Franjas Programadas",
+          "off_peak_hc": "Solo Horas Valle"
         }
       }
     },

@@ -24,9 +24,9 @@ from .entity import ThermorOnixEntity
 
 _LOGGER = logging.getLogger(__name__)
 
-OPTION_24H = "24h Continuous"
-OPTION_PROGRAMMED = "Programmed Slots"
-OPTION_OFF_PEAK = "Off-Peak Hours (HC)"
+OPTION_24H = "continuous_24h"
+OPTION_PROGRAMMED = "programmed_slots"
+OPTION_OFF_PEAK = "off_peak_hc"
 
 RANGE_TO_OPTION = {
     RANGE_24H: OPTION_24H,
@@ -60,6 +60,7 @@ async def async_setup_entry(
 class ThermorOperatingRangeSelect(ThermorOnixEntity, SelectEntity):
     """Select entity to control the internal operating range and scheduling mode."""
 
+    _attr_translation_key = "operating_range"
     _attr_options = [OPTION_24H, OPTION_PROGRAMMED, OPTION_OFF_PEAK]
     _attr_icon = "mdi:calendar-clock"
 

@@ -37,9 +37,9 @@
       "operating_range": {
         "name": "Operating Schedule Mode",
         "state": {
-          "24h Continuous": "24h Continuous",
-          "Programmed Slots": "Programmed Slots",
-          "Off-Peak Hours (HC)": "Off-Peak Hours (HC)"
+          "continuous_24h": "24h Continuous",
+          "programmed_slots": "Programmed Slots",
+          "off_peak_hc": "Off-Peak Hours (HC)"
         }
       }
     },
