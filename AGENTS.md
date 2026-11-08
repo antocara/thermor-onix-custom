@@ -10,6 +10,11 @@
 2. **LOCAL WORK ONLY BY DEFAULT:**
    - All code development, testing, local git commits, file structuring, and linting must remain strictly local until the user requests remote synchronization.
 
+3. **CONVENTIONAL COMMITS MANDATORY:**
+   - All Git commit messages **MUST** strictly follow the [Conventional Commits specification](https://www.conventionalcommits.org/) (v1.0.0).
+   - Structure: `<type>(<scope>): <description>` (e.g., `fix(switch): ...`, `feat(water_heater): ...`, `chore: ...`).
+   - Standard types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
+
 ---
 
 ## 🛠️ PROJECT ARCHITECTURE & DEVELOPMENT RULES
