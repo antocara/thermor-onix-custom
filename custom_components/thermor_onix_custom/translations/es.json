@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Conectar con Thermor Cozytouch",
+        "description": "Introduce tus credenciales de la aplicación móvil Thermor Cozytouch.",
+        "data": {
+          "username": "Correo Electrónico",
+          "password": "Contraseña",
+          "poll_interval": "Intervalo de Actualización (segundos)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se pudo conectar con el servidor de Cozytouch.",
+      "invalid_auth": "Usuario o contraseña no válidos.",
+      "too_many_requests": "Límite de peticiones de Overkiz alcanzado. Espera unos minutos.",
+      "server_maintenance": "Los servidores de Thermor están en mantenimiento temporal.",
+      "unknown": "Error inesperado al conectar."
+    },
+    "abort": {
+      "already_configured": "Esta cuenta de Thermor ya está configurada en Home Assistant."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opciones de Thermor Onix",
+        "data": {
+          "poll_interval": "Intervalo de Actualización (segundos)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "select": {
+      "operating_range": {
+        "name": "Modo de Horario Operativo",
+        "state": {
+          "24h Continuous": "24 Horas Continuo",
+          "Programmed Slots": "Solo Franjas Programadas",
+          "Off-Peak Hours (HC)": "Solo Horas Valle"
+        }
+      }
+    },
+    "button": {
+      "sync_clock": {
+        "name": "Sincronizar Reloj Interno"
+      },
+      "refresh_telemetry": {
+        "name": "Actualizar Telemetría Ahora"
+      }
+    },
+    "switch": {
+      "away_switch": {
+        "name": "Modo Ausencia (Antihielo)"
+      },
+      "eco_switch": {
+        "name": "Modo Eco"
+      }
+    }
+  }
+}

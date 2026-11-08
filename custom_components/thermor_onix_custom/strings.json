@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Thermor Cozytouch",
+        "description": "Enter your Thermor Cozytouch mobile app credentials.",
+        "data": {
+          "username": "Email",
+          "password": "Password",
+          "poll_interval": "Polling Interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to Cozytouch servers.",
+      "invalid_auth": "Invalid email or password.",
+      "too_many_requests": "Overkiz rate limit reached. Please wait a few minutes.",
+      "server_maintenance": "Thermor Cozytouch cloud is currently undergoing maintenance.",
+      "unknown": "Unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This Thermor account is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Thermor Onix Options",
+        "data": {
+          "poll_interval": "Polling Interval (seconds)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "select": {
+      "operating_range": {
+        "name": "Operating Schedule Mode",
+        "state": {
+          "24h Continuous": "24h Continuous",
+          "Programmed Slots": "Programmed Slots",
+          "Off-Peak Hours (HC)": "Off-Peak Hours (HC)"
+        }
+      }
+    },
+    "button": {
+      "sync_clock": {
+        "name": "Synchronize Internal Clock"
+      },
+      "refresh_telemetry": {
+        "name": "Refresh Telemetry Now"
+      }
+    },
+    "switch": {
+      "away_switch": {
+        "name": "Away Mode (Anti-Frost)"
+      },
+      "eco_switch": {
+        "name": "Eco Mode"
+      }
+    }
+  }
+}

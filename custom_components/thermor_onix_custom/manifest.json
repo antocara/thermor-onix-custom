@@ -1,0 +1,12 @@
+{
+  "domain": "thermor_onix_custom",
+  "name": "Thermor Onix DHW Plus",
+  "codeowners": ["@antocara"],
+  "config_flow": true,
+  "documentation": "https://github.com/antocara/thermor-onix-custom",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/antocara/thermor-onix-custom/issues",
+  "requirements": ["pyoverkiz>=2.3.1"],
+  "version": "1.0.0"
+}
