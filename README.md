@@ -7,7 +7,7 @@
 [🇪🇸 Cambiar a versión en Español](README_es.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/default)
-[![GitHub Release](https://img.shields.io/github/v/release/antocara/thermor-onix-custom?style=flat-square)](https://github.com/antocara/thermor-onix-custom/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/antocara/thermor-onix-custom?style=flat-square&logo=github)](https://github.com/antocara/thermor-onix-custom/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Custom integration for **Home Assistant** specifically designed for **Thermor Onix** double-tank smart electric water heaters (and compatible Atlantic / Sauter models communicating via Cozytouch / Overkiz using the `modbuslink` protocol).

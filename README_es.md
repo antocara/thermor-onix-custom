@@ -7,7 +7,7 @@
 [🇬🇧 Switch to English Version](README.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/default)
-[![GitHub Release](https://img.shields.io/github/v/release/antocara/thermor-onix-custom?style=flat-square)](https://github.com/antocara/thermor-onix-custom/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/antocara/thermor-onix-custom?style=flat-square&logo=github)](https://github.com/antocara/thermor-onix-custom/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Integración personalizada para **Home Assistant** diseñada para termos eléctricos inteligentes de doble cuba **Thermor Onix** (y gamas compatibles de Atlantic / Sauter que utilicen la pasarela Cozytouch y protocolo `modbuslink`).
