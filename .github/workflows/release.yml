@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag version to release (e.g. v1.0.3)"
+        description: "Tag version to release (e.g. v1.0.4)"
         required: true
         type: string
 
@@ -15,8 +15,24 @@ permissions:
   contents: write
 
 jobs:
+  validate:
+    name: Validate integration with HACS & Hassfest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: HACS Action
+        uses: "hacs/action@main"
+        with:
+          category: "integration"
+
+      - name: Hassfest
+        uses: "home-assistant/actions/hassfest@master"
+
   release:
     name: Create GitHub Release
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
