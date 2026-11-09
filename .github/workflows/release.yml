@@ -49,6 +49,21 @@ jobs:
             echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           fi
 
+      - name: Generate Release Notes from Commit History
+        run: |
+          TAG="${{ steps.vars.outputs.tag }}"
+          PREV_TAG=$(git tag --sort=-version:refname | grep -v "^${TAG}$" | head -n 1 || true)
+          echo "## What's Changed in ${TAG}" > RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          if [ -n "$PREV_TAG" ]; then
+            git log "${PREV_TAG}..${TAG}" --pretty=format:"* %s (\`%h\`)" --grep="^chore(release):" --invert-grep >> RELEASE_NOTES.md
+            echo "" >> RELEASE_NOTES.md
+            echo "" >> RELEASE_NOTES.md
+            echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${PREV_TAG}...${TAG}" >> RELEASE_NOTES.md
+          else
+            git log "${TAG}" --pretty=format:"* %s (\`%h\`)" >> RELEASE_NOTES.md
+          fi
+
       - name: Package integration zip for HACS
         run: |
           cd custom_components
@@ -60,7 +75,8 @@ jobs:
         with:
           tag_name: ${{ steps.vars.outputs.tag }}
           name: ${{ steps.vars.outputs.tag }}
-          generate_release_notes: true
+          body_path: RELEASE_NOTES.md
+          generate_release_notes: false
           draft: false
           prerelease: false
           files: |
