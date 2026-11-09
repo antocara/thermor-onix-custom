@@ -10,6 +10,7 @@ from pyoverkiz.enums import Server
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 from .const import (
     CONF_PASSWORD,
@@ -36,7 +37,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     )
 
     creds = UsernamePasswordCredentials(username=username, password=password)
-    client = OverkizClient(server=Server.THERMOR_COZYTOUCH, credentials=creds)
+    session = async_create_clientsession(hass)
+    client = OverkizClient(
+        server=Server.THERMOR_COZYTOUCH,
+        credentials=creds,
+        session=session,
+    )
 
     coordinator = ThermorDataUpdateCoordinator(
         hass=hass,
@@ -45,7 +51,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     )
 
     # Perform initial refresh to verify connectivity and load devices
-    await coordinator.async_config_entry_first_refresh()
+    try:
+        await coordinator.async_config_entry_first_refresh()
+    except Exception:
+        await client.close()
+        raise
 
     hass.data[DOMAIN][entry.entry_id] = coordinator
 

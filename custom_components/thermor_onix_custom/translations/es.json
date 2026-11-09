@@ -9,6 +9,14 @@
           "password": "Contraseña",
           "poll_interval": "Intervalo de Actualización (segundos)"
         }
+      },
+      "reauth_confirm": {
+        "title": "Reautenticar Thermor Cozytouch",
+        "description": "Tus credenciales de Thermor Cozytouch han caducado o han cambiado. Introduce las nuevas credenciales.",
+        "data": {
+          "username": "Correo Electrónico",
+          "password": "Contraseña"
+        }
       }
     },
     "error": {
@@ -19,7 +27,8 @@
       "unknown": "Error inesperado al conectar."
     },
     "abort": {
-      "already_configured": "Esta cuenta de Thermor ya está configurada en Home Assistant."
+      "already_configured": "Esta cuenta de Thermor ya está configurada en Home Assistant.",
+      "reauth_successful": "La reautenticación se ha realizado correctamente."
     }
   },
   "options": {

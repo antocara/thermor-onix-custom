@@ -9,6 +9,14 @@
           "password": "Password",
           "poll_interval": "Polling Interval (seconds)"
         }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate Thermor Cozytouch",
+        "description": "Your Thermor Cozytouch credentials have expired or changed. Please enter your updated credentials.",
+        "data": {
+          "username": "Email",
+          "password": "Password"
+        }
       }
     },
     "error": {
@@ -19,7 +27,8 @@
       "unknown": "Unexpected error occurred."
     },
     "abort": {
-      "already_configured": "This Thermor account is already configured."
+      "already_configured": "This Thermor account is already configured.",
+      "reauth_successful": "Re-authentication was successful."
     }
   },
   "options": {
