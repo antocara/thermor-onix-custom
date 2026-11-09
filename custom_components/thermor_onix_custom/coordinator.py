@@ -44,6 +44,7 @@ class ThermorDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.main_device: Device | None = None
         self.energy_device: Device | None = None
         self.gateway_device: Device | None = None
+        self._command_lock = asyncio.Lock()
 
     async def _async_update_data(self) -> dict[str, Any]:
         """Fetch all device states from the Overkiz cloud."""
@@ -98,31 +99,32 @@ class ThermorDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     ) -> str | None:
         """Send a command to the device and trigger a state refresh."""
         parameters = parameters or []
-        _LOGGER.debug(
-            "Sending command to %s: %s with parameters %s",
-            device_url,
-            command_name,
-            parameters,
-        )
-
-        try:
-            cmd = Command(name=command_name, parameters=parameters)
-            action = Action(device_url=device_url, commands=[cmd])
-            exec_id = await self.client.execute_action_group(
-                actions=[action],
-                label=f"HA: {command_name}",
-            )
-            _LOGGER.info(
-                "Command %s executed successfully on Thermor Onix (Action ID: %s)",
+        async with self._command_lock:
+            _LOGGER.debug(
+                "Sending command to %s: %s with parameters %s",
+                device_url,
                 command_name,
-                exec_id,
+                parameters,
             )
 
-            # Short delay to allow the cloud to propagate the hardware state change
-            await asyncio.sleep(1.5)
-            await self.async_request_refresh()
-            return exec_id
+            try:
+                cmd = Command(name=command_name, parameters=parameters)
+                action = Action(device_url=device_url, commands=[cmd])
+                exec_id = await self.client.execute_action_group(
+                    actions=[action],
+                    label=f"HA: {command_name}",
+                )
+                _LOGGER.info(
+                    "Command %s executed successfully on Thermor Onix (Action ID: %s)",
+                    command_name,
+                    exec_id,
+                )
 
-        except OverkizError as err:
-            _LOGGER.error("Failed to execute command %s: %s", command_name, err)
-            raise
+                # Short delay to allow the cloud and Modbus gateway to process the state change
+                await asyncio.sleep(1.5)
+                await self.async_request_refresh()
+                return exec_id
+
+            except OverkizError as err:
+                _LOGGER.error("Failed to execute command %s: %s", command_name, err)
+                raise
