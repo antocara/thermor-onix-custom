@@ -120,8 +120,8 @@ class ThermorDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     exec_id,
                 )
 
-                # Short delay to allow the cloud and Modbus gateway to process the state change
-                await asyncio.sleep(1.5)
+                # Wait 3s for the cloud and Modbus gateway to process the state change
+                await asyncio.sleep(3.0)
                 await self.async_request_refresh()
                 return exec_id
 

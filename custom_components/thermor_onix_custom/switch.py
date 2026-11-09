@@ -85,6 +85,7 @@ class ThermorAntiLegionellaSwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off anti-legionella protection."""
@@ -99,6 +100,7 @@ class ThermorAntiLegionellaSwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
 
 
 class ThermorSmartGridSwitch(ThermorOnixEntity, SwitchEntity):
@@ -136,6 +138,7 @@ class ThermorSmartGridSwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Deactivate Smart Grid mode."""
@@ -150,6 +153,7 @@ class ThermorSmartGridSwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
 
 
 class ThermorBoostSwitch(ThermorOnixEntity, SwitchEntity):
@@ -187,6 +191,7 @@ class ThermorBoostSwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off Boost mode."""
@@ -201,6 +206,7 @@ class ThermorBoostSwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
 
 
 class ThermorAwaySwitch(ThermorOnixEntity, SwitchEntity):
@@ -238,6 +244,7 @@ class ThermorAwaySwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off Away mode."""
@@ -252,6 +259,7 @@ class ThermorAwaySwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
 
 
 class ThermorEcoSwitch(ThermorOnixEntity, SwitchEntity):
@@ -289,6 +297,7 @@ class ThermorEcoSwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off Eco mode (switch to manual)."""
@@ -303,3 +312,4 @@ class ThermorEcoSwitch(ThermorOnixEntity, SwitchEntity):
             )
         finally:
             self._attr_is_on = None
+            self.async_write_ha_state()
