@@ -49,7 +49,8 @@ class ThermorDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     async def _async_update_data(self) -> dict[str, Any]:
         """Fetch all device states from the Overkiz cloud."""
         try:
-            setup = await self.client.get_setup()
+            async with asyncio.timeout(30):
+                setup = await self.client.get_setup()
             devices_by_url: dict[str, Device] = {}
 
             for device in setup.devices:
@@ -86,6 +87,8 @@ class ThermorDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         except MaintenanceError as err:
             _LOGGER.warning("Cozytouch server temporarily undergoing maintenance: %s", err)
             raise UpdateFailed(f"Cozytouch server maintenance: {err}") from err
+        except TimeoutError as err:
+            raise UpdateFailed("Timeout while communicating with Overkiz cloud") from err
         except OverkizError as err:
             raise UpdateFailed(f"Communication error with Overkiz: {err}") from err
         except Exception as err:
@@ -110,10 +113,11 @@ class ThermorDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             try:
                 cmd = Command(name=command_name, parameters=parameters)
                 action = Action(device_url=device_url, commands=[cmd])
-                exec_id = await self.client.execute_action_group(
-                    actions=[action],
-                    label=f"HA: {command_name}",
-                )
+                async with asyncio.timeout(30):
+                    exec_id = await self.client.execute_action_group(
+                        actions=[action],
+                        label=f"HA: {command_name}",
+                    )
                 _LOGGER.info(
                     "Command %s executed successfully on Thermor Onix (Action ID: %s)",
                     command_name,

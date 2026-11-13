@@ -43,15 +43,15 @@ async def validate_credentials(
 
     creds = UsernamePasswordCredentials(username=username, password=password)
     session = async_create_clientsession(hass)
-    async with OverkizClient(
+    client = OverkizClient(
         server=Server.THERMOR_COZYTOUCH,
         credentials=creds,
         session=session,
-    ) as client:
-        await client.login()
-        setup = await client.get_setup()
-        gateway_id = setup.gateways[0].gateway_id if setup.gateways else username
-        return {"gateway_id": gateway_id, "title": f"Thermor Onix ({username})"}
+    )
+    await client.login()
+    setup = await client.get_setup()
+    gateway_id = setup.gateways[0].gateway_id if setup.gateways else username
+    return {"gateway_id": gateway_id, "title": f"Thermor Onix ({username})"}
 
 
 class ThermorOnixConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):

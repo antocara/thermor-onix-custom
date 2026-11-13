@@ -51,11 +51,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     )
 
     # Perform initial refresh to verify connectivity and load devices
-    try:
-        await coordinator.async_config_entry_first_refresh()
-    except Exception:
-        await client.close()
-        raise
+    await coordinator.async_config_entry_first_refresh()
 
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
@@ -73,10 +69,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
     if unload_ok:
-        coordinator: ThermorDataUpdateCoordinator = hass.data[DOMAIN].pop(entry.entry_id)
-        # Close HTTP session if client provides a close method
-        if hasattr(coordinator.client, "close"):
-            await coordinator.client.close()
+        hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
 
