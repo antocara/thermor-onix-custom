@@ -4,6 +4,12 @@ All notable changes to the **Thermor Onix DHW Plus** Home Assistant integration 
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [v1.0.6] - 2026-11-13
+
+### Fixed
+- **coordinator:** Wrap `get_setup()` and `execute_action_group()` in `asyncio.timeout(30)` and catch `TimeoutError` as `UpdateFailed`, preventing stalled cloud requests from freezing `DataUpdateCoordinator` polling (`6b98f80`).
+- **init / config_flow:** Stop calling `client.close()` or `async with OverkizClient(...)` on Home Assistant-managed `async_create_clientsession(hass)` sessions (`6b98f80`).
+
 ## [v1.0.5] - 2026-11-09
 
 ### Fixed
