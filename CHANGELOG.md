@@ -4,6 +4,12 @@ All notable changes to the **Thermor Onix DHW Plus** Home Assistant integration 
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [v1.0.8] - 2026-11-16
+
+### Fixed
+- **binary_sensor / water_heater:** Recognize both `"on"` and `"heating"` for `core:HeatingStatusState` so active heating status is reported accurately (`9ff346c`).
+- **water_heater:** Migrate `_attr_temperature_unit`, `current_temperature`, and `target_temperature` to their `native_*` equivalents to eliminate Home Assistant 2027.11 deprecation warnings (`9ff346c`).
+
 ## [v1.0.7] - 2026-11-16
 
 ### Fixed
