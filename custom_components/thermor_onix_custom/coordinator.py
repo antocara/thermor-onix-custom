@@ -13,7 +13,7 @@ from pyoverkiz.exceptions import (
     OverkizError,
     TooManyRequestsError,
 )
-from pyoverkiz.models import Action, Command, Device
+from pyoverkiz.models import Action, Command, Device, States
 
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
@@ -44,36 +44,52 @@ class ThermorDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.main_device: Device | None = None
         self.energy_device: Device | None = None
         self.gateway_device: Device | None = None
+        self._devices_by_url: dict[str, Device] = {}
         self._command_lock = asyncio.Lock()
 
     async def _async_update_data(self) -> dict[str, Any]:
         """Fetch all device states from the Overkiz cloud."""
         try:
             async with asyncio.timeout(30):
-                setup = await self.client.get_setup()
-            devices_by_url: dict[str, Device] = {}
+                if not self.main_device:
+                    setup = await self.client.get_setup(refresh=True)
+                    devices_by_url: dict[str, Device] = {}
 
-            for device in setup.devices:
-                devices_by_url[device.device_url] = device
+                    for device in setup.devices:
+                        devices_by_url[device.device_url] = device
 
-                # Identify primary domestic hot water production device
-                if device.widget == "DomesticHotWaterProduction" or device.device_url.endswith("1#1"):
-                    self.main_device = device
-                # Identify cumulative electric energy sensor device
-                elif (
-                    device.widget == "CumulativeElectricPowerConsumptionSensor"
-                    or device.device_url.endswith("1#2")
-                ):
-                    self.energy_device = device
-                # Identify internal uPod gateway
-                elif "uPod" in device.device_url or device.widget == "Pod":
-                    self.gateway_device = device
+                        # Identify primary domestic hot water production device
+                        if device.widget == "DomesticHotWaterProduction" or device.device_url.endswith("1#1"):
+                            self.main_device = device
+                        # Identify cumulative electric energy sensor device
+                        elif (
+                            device.widget == "CumulativeElectricPowerConsumptionSensor"
+                            or device.device_url.endswith("1#2")
+                        ):
+                            self.energy_device = device
+                        # Identify internal uPod gateway
+                        elif "uPod" in device.device_url or device.widget == "Pod":
+                            self.gateway_device = device
 
-            if not self.main_device:
-                raise UpdateFailed("No domestic hot water device found in Thermor account.")
+                    if not self.main_device:
+                        raise UpdateFailed("No domestic hot water device found in Thermor account.")
+
+                    self._devices_by_url = devices_by_url
+                else:
+                    # Fetch live states directly per device (get_setup() caches responses in pyoverkiz)
+                    tracked_devices = [
+                        dev
+                        for dev in (self.main_device, self.energy_device, self.gateway_device)
+                        if dev is not None
+                    ]
+                    results = await asyncio.gather(
+                        *(self.client.get_state(dev.device_url) for dev in tracked_devices)
+                    )
+                    for dev, new_states in zip(tracked_devices, results, strict=True):
+                        dev.states = States(new_states)
 
             return {
-                "devices": devices_by_url,
+                "devices": self._devices_by_url,
                 "main_device": self.main_device,
                 "energy_device": self.energy_device,
                 "gateway_device": self.gateway_device,
