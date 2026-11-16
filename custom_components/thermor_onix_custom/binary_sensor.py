@@ -56,7 +56,7 @@ BINARY_SENSORS: tuple[ThermorBinarySensorDescription, ...] = (
         state_key=STATE_HEATING_STATUS,
         device_class=BinarySensorDeviceClass.RUNNING,
         icon="mdi:fire",
-        is_on_fn=lambda val: str(val).lower() == "on",
+        is_on_fn=lambda val: str(val).lower() in ("on", "heating"),
     ),
     ThermorBinarySensorDescription(
         key="boost_active",

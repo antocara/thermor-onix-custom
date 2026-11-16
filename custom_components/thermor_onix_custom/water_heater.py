@@ -57,7 +57,7 @@ async def async_setup_entry(
 class ThermorOnixWaterHeater(ThermorOnixEntity, WaterHeaterEntity):
     """Primary domestic hot water entity for Thermor Onix double-tank heaters."""
 
-    _attr_temperature_unit = UnitOfTemperature.CELSIUS
+    _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_supported_features = (
         WaterHeaterEntityFeature.TARGET_TEMPERATURE
         | WaterHeaterEntityFeature.OPERATION_MODE
@@ -82,7 +82,7 @@ class ThermorOnixWaterHeater(ThermorOnixEntity, WaterHeaterEntity):
         self._attr_name = "Water Heater"
 
     @property
-    def current_temperature(self) -> float | None:
+    def native_current_temperature(self) -> float | None:
         """Return the current temperature measured in the outlet tank (ready water)."""
         temp = self.get_state(STATE_TEMP_OUTLET)
         if temp is not None:
@@ -93,7 +93,7 @@ class ThermorOnixWaterHeater(ThermorOnixEntity, WaterHeaterEntity):
         return None
 
     @property
-    def target_temperature(self) -> float | None:
+    def native_target_temperature(self) -> float | None:
         """Return the target hot water temperature setpoint."""
         target = self.get_state(STATE_WATER_TARGET_TEMP)
         if target is not None:
@@ -149,7 +149,7 @@ class ThermorOnixWaterHeater(ThermorOnixEntity, WaterHeaterEntity):
             attrs["showers_remaining"] = showers
 
         heating = self.get_state(STATE_HEATING_STATUS)
-        attrs["is_heating"] = (str(heating).lower() == "on")
+        attrs["is_heating"] = str(heating).lower() in ("on", "heating")
 
         return attrs
 
